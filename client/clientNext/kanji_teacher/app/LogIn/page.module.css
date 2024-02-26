@@ -1,0 +1,60 @@
+.MainContainer{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6rem;
+}
+.Error{
+  color: var(--accent)
+}
+
+
+.main{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
+}
+
+.EmailInput, .PasswordInput{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.EmailInput label, .PasswordInput label{
+  font-size: 1.25rem;
+}
+
+.EmailInput input, .PasswordInput input{
+  font-family: inherit;
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  background-color: var(--lightMode);
+  border: 2px solid var(--darkMode);
+  outline: none;
+}
+
+.ToggleBtn, .SubmitBtn{
+  width: 20rem;
+  display: flex;
+  font-size: 1.125rem;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--darkMode);
+  background-color: var(--lightMode);
+  border: none;
+  outline: none;
+  padding: 1rem 2rem;
+  transition: 150ms ease-in-out;
+}
+.ToggleBtn:hover, .SubmitBtn:hover, .ToggleBtn:focus, .SubmitBtn:focus{
+  cursor: pointer;
+  background-color: var(--darkMode);
+  color: var(--lightMode);
+}
+

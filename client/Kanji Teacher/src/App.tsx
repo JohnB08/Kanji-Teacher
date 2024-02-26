@@ -25,9 +25,10 @@ function App() {
   firebase.initializeApp(firebaseConfig)
   const [user, setUser] = useState<User | null>(null)
   useEffect(()=>{
-    onAuthStateChanged(firebase.auth(), (user)=>{
+    onAuthStateChanged(firebase.auth(), async (user)=>{
       console.log(user)
       setUser(user)
+      console.log(user?.accessToken)
     })
   })
 

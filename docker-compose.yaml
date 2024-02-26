@@ -1,0 +1,8 @@
+service:
+    express:
+        image: node:20-bookworm-slim
+        command: ["node", "/app/server.js"] 
+        volumes:
+          - ./expressServer/serverLogic/:/app/
+        ports:
+          - 3000:3000
