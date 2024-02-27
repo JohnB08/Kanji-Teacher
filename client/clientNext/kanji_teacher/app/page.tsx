@@ -11,13 +11,13 @@ import { SignOut } from "./Utils/SignoutBtn/Signout";
 const notoSansJp = Noto_Sans_JP({ subsets: ["latin"], weight: ["400", "700"] });
 
 export default function Page (){
-    const [user, setUser] = showUsers()
+    const [user] = showUsers()
     console.log(user)
     return (
         <main className={[styles.main, notoSansJp.className].join(" ")}>
             <Image src={Logo} alt={"Logo"} className={styles.Logo} />
             <div className={styles.LinkContainer}>
-                {user ? <><Link href={"/TryIt"} className={[styles.Link, "button"].join(" ") }>Continue Lessons</Link> <SignOut className={styles.Link}/> </>:  <><Link href={"/TryIt"} className={[styles.Link, "button"].join(" ")}>Try it out!</Link>
+                {user ? <><Link href={"/KanjiTest"} className={[styles.Link, "button"].join(" ") }>Continue Lessons</Link> <SignOut className={styles.Link}/> </>:  <><Link href={"/KanjiTest"} className={[styles.Link, "button"].join(" ")}>Try it out!</Link>
                 <Link href={"/LogIn"} className={[styles.Link, "button"].join(" ")}>Log In/Sign Up</Link></>}
                
             </div>

@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Logo from "../../public/logo.svg";
 import { SignOut } from "../Utils/SignoutBtn/Signout";
+import { useRouter } from "next/navigation";
 
 
 export default function LoginPage() {
@@ -18,13 +19,15 @@ export default function LoginPage() {
   const [authStyle, setAuthStyle] = useState<string>("");
   const auth = getAuth(firebaseApp);
   const [showLogin, setShowLogin] = useState<boolean>(true);  
-  const [user, setUser] = showUsers()
+  const [user] = showUsers()
+  const router = useRouter();
   console.log(user)
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      router.push("/KanjiTest");
     } catch (error){
       console.error("Login Error!", error);
       setAuthError("Invalid email or password");
@@ -38,6 +41,7 @@ export default function LoginPage() {
       await createUserWithEmailAndPassword(auth, email, password);
       authError ? setAuthError(null) : null;
       authStyle ? setAuthStyle("") : null;
+      router.push("/KanjiTest");
     } catch (error){
       console.error("Signup Error!", error);
       setAuthError("Email allready in use");
