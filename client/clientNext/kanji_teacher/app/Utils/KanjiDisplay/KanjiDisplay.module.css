@@ -1,6 +1,6 @@
 .Display{
     border: 0.25rem solid var(--darkMode);
-    padding: 2rem 4rem;
+    padding: 2rem 5rem;
     text-align: center;
     border-radius: 1rem;
 }
