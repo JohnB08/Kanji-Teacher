@@ -1,0 +1,10 @@
+.Display{
+    border: 0.25rem solid var(--darkMode);
+    padding: 2rem 4rem;
+    text-align: center;
+    border-radius: 1rem;
+}
+.Kanji{
+    font-size: 20rem;
+    font-weight: 700;
+}

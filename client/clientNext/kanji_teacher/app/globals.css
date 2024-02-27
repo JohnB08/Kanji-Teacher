@@ -3,6 +3,11 @@
   --darkMode: #041115;
   --accent: #BA490F;
 }
+*{
+  border:none;
+  margin: 0;
+  box-sizing: border-box;
+}
 body{
   display: grid;
   place-items: center; 
@@ -18,7 +23,7 @@ body a{
 .button{
   font-size: 1rem;
   font-weight: 700;
-  width: 21.875rem;
+  width: 30rem;
   color: var(--darkMode);
   background-color: var(--lightMode);
   border: none;
@@ -31,4 +36,12 @@ body a{
   background-color: var(--darkMode);
   color: var(--lightMode);
   cursor: pointer;
+}
+.incorrect{
+    background-color: var(--accent);
+    color: var(--lightMode);
+}
+.correct{
+    background-color: var(--darkMode);
+    color: var(--lightMode);
 }

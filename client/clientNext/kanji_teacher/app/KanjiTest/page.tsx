@@ -1,28 +1,53 @@
-import { Suspense } from "react";
+"use client"
+
+import { Suspense, useState } from "react";
 import Link from "next/link";
-import dummydata from "../../dummydata/dummydata.json"
+import {dummydata, DummyData, DummyDataKanji, DummyDataKeys, DummyDataValues} from "../../dummydata/dummydata"
+import { KanjiDisplay } from "../Utils/KanjiDisplay/KanjiDisplay";
+import { KansjiAnswer } from "../Utils/KanjiAnswers/KanjiAnswers";
+import Style from "./page.module.css";
+import { showUsers } from "../../scripts/firebaseConfig/firebaseConfig";
 
 
-type QuizProps = {
-    uid: string | null;
+const setClass = (selectedAnswer: string, CorrectAnswer: string) =>{
+    if (selectedAnswer === "") return ""
+    return selectedAnswer === CorrectAnswer ? "correct" : "incorrect"
 }
-type DummyData = typeof dummydata
 
-type DummyDataKeys = keyof DummyData
+
 
 const validateUid = (uid:string|null, data: DummyData): uid is DummyDataKeys =>{
     return typeof uid === "string" && uid in data
 }
 
-export default function KanjiTest({uid=null}: QuizProps){
-    /* fetch med uid her til postgres */
-    const selectedData = validateUid(uid, dummydata) ? dummydata[uid] : dummydata["anonymous"]
-    console.log(selectedData)
-    console.log(uid)
 
+
+export default function KanjiTest(){
+    const [user] = showUsers();
+    const uid = user ? user.uid : null
+    const [index, setIndex] = useState<number>(0)
+    const [answerIsSet, setAnswer] = useState<boolean>(false)
+    /* fetch med uid her til postgres */
+    const selectedData = validateUid(uid, dummydata) ? dummydata[uid] : dummydata["anonymous"] as DummyDataValues
+    const currentKanji = Object.keys(selectedData)[index] as DummyDataKanji
+    const correctAnswer = selectedData[currentKanji].correctTranslation
+    const validateCorrectAnswer = () => {
+        setAnswer(true)
+        setTimeout(()=>{setIndex(index+1), setAnswer(false)}, 1000)
+    }
+    console.log(answerIsSet)
     return (
-        <div>
-            <h1>QUIZ ELEMENTER KOMMER HER</h1>
+        <div className={Style.Main}>
+            <KanjiDisplay kanji={currentKanji}/>
+            <div className={Style.ButtonContainer}>
+            {
+                selectedData[currentKanji]?.possibleAnswers.map((answer: string, i: number)=>{
+                    return(
+                        <KansjiAnswer className={answerIsSet ? setClass(answer, correctAnswer) : ""} key={i} answer={answer} HandleClick={validateCorrectAnswer}/>
+                    )
+                })
+            }
+            </div>
         </div>
     )
 
