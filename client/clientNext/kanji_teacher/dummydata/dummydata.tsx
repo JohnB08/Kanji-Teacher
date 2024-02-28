@@ -1,5 +1,5 @@
 export const dummydata = {
-    "n16kkO628qNKZU88oYSNwChx5673": {
+    "Qy8Y7izWhNS66chGKtVvclx4Zr53": {
         "卡": {
             "correctTranslation": "card",
             "possibleAnswers": ["card", "car", "lard", "bard"]
@@ -26,7 +26,7 @@ export const dummydata = {
         },
         "卩": {
             "correctTranslation": "seal",
-            "possibleAnswers": ["seal", "seal", "seal", "seal"]
+            "possibleAnswers": ["seal", "sale", "sell", "sail"]
         },
         "卪": {
             "correctTranslation": "to bend",

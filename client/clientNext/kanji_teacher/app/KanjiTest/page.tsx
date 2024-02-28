@@ -1,7 +1,7 @@
 "use client"
 
 import { Suspense, useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {dummydata, DummyData, DummyDataKanji, DummyDataKeys, DummyDataValues} from "../../dummydata/dummydata"
 import { KanjiDisplay } from "../Utils/KanjiDisplay/KanjiDisplay";
 import { KansjiAnswer } from "../Utils/KanjiAnswers/KanjiAnswers";
@@ -24,6 +24,7 @@ const validateUid = (uid:string|null, data: DummyData): uid is DummyDataKeys =>{
 
 export default function KanjiTest(){
     const [user] = showUsers();
+    const router = useRouter();
     const uid = user ? user.uid : null
     const [index, setIndex] = useState<number>(0)
     const [answerIsSet, setAnswer] = useState<boolean>(false)
@@ -31,9 +32,18 @@ export default function KanjiTest(){
     const selectedData = validateUid(uid, dummydata) ? dummydata[uid] : dummydata["anonymous"] as DummyDataValues
     const currentKanji = Object.keys(selectedData)[index] as DummyDataKanji
     const correctAnswer = selectedData[currentKanji].correctTranslation
+
+    const routeIndex = () =>{
+        if (index >= (Object.keys(selectedData).length)-1) return router.push("/")
+        else {
+            setIndex(index+1)
+            setAnswer(false)
+        }
+    }
+
     const validateCorrectAnswer = () => {
         setAnswer(true)
-        setTimeout(()=>{setIndex(index+1), setAnswer(false)}, 1000)
+        setTimeout(()=>{routeIndex()}, 1000)
     }
     console.log(answerIsSet)
     return (
