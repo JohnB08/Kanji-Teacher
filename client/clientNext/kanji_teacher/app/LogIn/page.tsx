@@ -123,8 +123,8 @@ export default function LoginPage() {
         <div className={Style.ButtonContainer}>
         <button type="submit" className={Style.SubmitBtn}>Log in</button>
       </div>
-        <button onClick={toggleForm} className={Style.ToggleBtn}>New User? Sign Up</button>
       </form>
+        <button onClick={toggleForm} className={Style.ToggleBtn}>New User? Sign Up</button>
       </>
       :
       <>
@@ -140,8 +140,8 @@ export default function LoginPage() {
         <div className={Style.ButtonContainer}>
         <button type="submit" className={Style.SubmitBtn}>Sign up!</button>
       </div>
-        <button onClick={toggleForm} className={Style.ToggleBtn}>Back to log In</button>
       </form>
+        <button onClick={toggleForm} className={Style.ToggleBtn}>Back to log In</button>
       </>
       }
 
