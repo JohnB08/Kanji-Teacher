@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
-import {dummydata, DummyData, DummyDataKanji, DummyDataKeys, DummyDataValues} from "../../dummydata/dummydata"
+import {dummydata } from "../../dummydata/dummydata"
 import { KanjiDisplay } from "../Utils/KanjiDisplay/KanjiDisplay";
 import { KansjiAnswer } from "../Utils/KanjiAnswers/KanjiAnswers";
 import Style from "./page.module.css";
@@ -14,13 +14,25 @@ const setClass = (selectedAnswer: string, CorrectAnswer: string) =>{
     return selectedAnswer === CorrectAnswer ? "correct" : "incorrect"
 }
 
+type DataKeys = "anonymous" | "Qy8Y7izWhNS66chGKtVvclx4Zr53"
 
 
-const validateUid = (uid:string|null, data: DummyData): uid is DummyDataKeys =>{
+const validateUid = (uid:string|null, data: any): uid is DataKeys =>{
     return typeof uid === "string" && uid in data
 }
 
+type kanjiAnon = keyof typeof dummydata.anonymous
 
+type kanjiUser = keyof typeof dummydata.Qy8Y7izWhNS66chGKtVvclx4Zr53
+
+type dataInterface = {
+    [key: string]: kanjiData
+}
+
+interface kanjiData {
+    correctTranslation: string,
+    possibleAnswers: string[]
+}
 
 export default function KanjiTest(){
     const [user] = showUsers();
@@ -29,9 +41,13 @@ export default function KanjiTest(){
     const [index, setIndex] = useState<number>(0)
     const [answerIsSet, setAnswer] = useState<boolean>(false)
     /* fetch med uid her til postgres */
-    const selectedData = validateUid(uid, dummydata) ? dummydata[uid] : dummydata["anonymous"] as DummyDataValues
-    const currentKanji = Object.keys(selectedData)[index] as DummyDataKanji
-    const correctAnswer = selectedData[currentKanji].correctTranslation
+    const selectedData: dataInterface = validateUid(uid, dummydata) ? dummydata[uid] : dummydata["anonymous"]
+    const currentKanji = Object.keys(selectedData)[index] as kanjiAnon | kanjiUser
+    let correctAnswer = ""
+    if (currentKanji in selectedData){
+        const kanji = selectedData[currentKanji] as kanjiData;
+        correctAnswer = kanji.correctTranslation
+    }
 
     const routeIndex = () =>{
         if (index >= (Object.keys(selectedData).length)-1) return router.push("/")

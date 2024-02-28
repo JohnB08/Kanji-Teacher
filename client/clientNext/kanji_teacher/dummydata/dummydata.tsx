@@ -53,21 +53,13 @@ export const dummydata = {
         "句": {
             "correctTranslation": "sentence",
             "possibleAnswers": ["sentence", "word", "paragraph", "essay"]
-        }
+        },
+        "卡": {
+            "correctTranslation": "card",
+            "possibleAnswers": ["card", "car", "lard", "bard"]
+        },
     }
 };
 
-export type DummyData = typeof dummydata;
 
-export type DummyDataKeys = keyof DummyData;
 
-export type DummyDataValues = {[K in DummyDataKeys]: DummyData[K]}[DummyDataKeys];
-
-export type DummyDataKanji = {[K in DummyDataKeys]: keyof DummyData[K]}[keyof DummyData];
-
-export interface Dataset{
-    [key: string]: {
-        correctTranslation: string,
-        possibleAnswers: string[]
-    }
-}
