@@ -66,13 +66,38 @@ export default function LoginPage() {
       authStyle ? setAuthStyle("") : null;
       router.push("/KanjiTest");
     } catch (error){
-      console.log("Signup Error!", error);
-      setAuthError("Email allready in use");
+      if (error instanceof FirebaseError){
+        console.log(error.code)
+        switch (error.code){
+          case "auth/email-already-in-use":
+            setAuthError("Email already in use");
+            setAuthStyle(Style.Error);
+            break;
+          case "auth/invalid-email":
+            setAuthError("Invalid email");
+            setAuthStyle(Style.Error);
+            break;
+          case "auth/missing-password":
+            setAuthError("Password is missing");
+            setAuthStyle(Style.Error);
+            break;
+          case "auth/weak-password":
+            setAuthError("Weak password");
+            setAuthStyle(Style.Error);
+            break;
+          default:
+            setAuthError("Something went wrong");
+            setAuthStyle(Style.Error);
+            break;
+        }
+    } else {
+      console.log("Login Error!", error);
+      setAuthError("Something went wrong");
       setAuthStyle(Style.Error);
     }
   
   }
-
+}
   const toggleForm = () =>{
     setShowLogin(!showLogin)
   }
