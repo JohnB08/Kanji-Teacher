@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
-import {dummydata } from "../../dummydata/dummydata"
+import {dummydata, kanjiData, dataInterface } from "../../dummydata/dummydata"
 import { KanjiDisplay } from "../Utils/KanjiDisplay/KanjiDisplay";
 import { KansjiAnswer } from "../Utils/KanjiAnswers/KanjiAnswers";
 import Style from "./page.module.css";
@@ -21,18 +21,8 @@ const validateUid = (uid:string|null, data: any): uid is DataKeys =>{
     return typeof uid === "string" && uid in data
 }
 
-type kanjiAnon = keyof typeof dummydata.anonymous
 
-type kanjiUser = keyof typeof dummydata.Qy8Y7izWhNS66chGKtVvclx4Zr53
 
-type dataInterface = {
-    [key: string]: kanjiData
-}
-
-interface kanjiData {
-    correctTranslation: string,
-    possibleAnswers: string[]
-}
 
 export default function KanjiTest(){
     const [user] = showUsers();
@@ -42,7 +32,7 @@ export default function KanjiTest(){
     const [answerIsSet, setAnswer] = useState<boolean>(false)
     /* fetch med uid her til postgres */
     const selectedData: dataInterface = validateUid(uid, dummydata) ? dummydata[uid] : dummydata["anonymous"]
-    const currentKanji = Object.keys(selectedData)[index] as kanjiAnon | kanjiUser
+    const currentKanji = Object.keys(selectedData)[index]
     let correctAnswer = ""
     if (currentKanji in selectedData){
         const kanji = selectedData[currentKanji] as kanjiData;

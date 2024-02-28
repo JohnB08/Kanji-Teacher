@@ -61,5 +61,12 @@ export const dummydata = {
     }
 };
 
+export type dataInterface = {
+    [key: string]: kanjiData
+}
 
+export interface kanjiData {
+    correctTranslation: string,
+    possibleAnswers: string[]
+}
 
