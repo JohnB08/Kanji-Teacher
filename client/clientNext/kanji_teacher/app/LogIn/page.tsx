@@ -9,6 +9,7 @@ import Image from "next/image";
 import Logo from "../../public/logo.svg";
 import { SignOut } from "../Utils/SignoutBtn/Signout";
 import { useRouter } from "next/navigation";
+import { FirebaseError } from "firebase/app";
 
 
 export default function LoginPage() {
@@ -29,11 +30,33 @@ export default function LoginPage() {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/KanjiTest");
     } catch (error){
-      console.error("Login Error!", error);
-      setAuthError("Invalid email or password");
+      if (error instanceof FirebaseError){
+        console.log(error.code)
+        switch (error.code){
+          case "auth/user-not-found":
+            setAuthError("User not found");
+            setAuthStyle(Style.Error);
+            break;
+          case "auth/invalid-credential":
+            setAuthError("Invalid email or password");
+            setAuthStyle(Style.Error);
+            break;
+          case "auth/missing-password":
+            setAuthError("Password is missing");
+            setAuthStyle(Style.Error);
+            break;
+          default:
+            setAuthError("Something went wrong");
+            setAuthStyle(Style.Error);
+            break;
+        }
+    } else {
+      console.log("Login Error!", error);
+      setAuthError("Something went wrong");
       setAuthStyle(Style.Error);
     }
   }
+}
 
   const handleSignup = async (event: FormEvent) => {
     event.preventDefault();
@@ -43,7 +66,7 @@ export default function LoginPage() {
       authStyle ? setAuthStyle("") : null;
       router.push("/KanjiTest");
     } catch (error){
-      console.error("Signup Error!", error);
+      console.log("Signup Error!", error);
       setAuthError("Email allready in use");
       setAuthStyle(Style.Error);
     }
