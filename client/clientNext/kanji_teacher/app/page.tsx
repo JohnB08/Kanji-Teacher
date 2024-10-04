@@ -17,9 +17,8 @@ export default function Page (){
         <main className={[styles.main, notoSansJp.className].join(" ")}>
             <Image src={Logo} alt={"Logo"} className={styles.Logo} />
             <div className={styles.LinkContainer}>
-                {user ? <><Link href={"/KanjiTest"} className={[styles.Link, "button"].join(" ") }>Continue Lessons</Link> <SignOut className={styles.Link}/> </>:  <><Link href={"/KanjiTest"} className={[styles.Link, "button"].join(" ")}>Try it out!</Link>
+                {user ? <><Link href={"/FlashCard"} className={[styles.Link, "button"].join(" ") }>Continue Lessons</Link> <SignOut className={styles.Link}/> </>:  <><Link href={"/KanjiTest"} className={[styles.Link, "button"].join(" ")}>Try it out!</Link>
                 <Link href={"/LogIn"} className={[styles.Link, "button"].join(" ")}>Log In/Sign Up</Link></>}
-               
             </div>
         </main>
     )

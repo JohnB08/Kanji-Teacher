@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {dummydata, kanjiData, dataInterface } from "../../dummydata/dummydata"
 import { KanjiDisplay } from "../Utils/KanjiDisplay/KanjiDisplay";

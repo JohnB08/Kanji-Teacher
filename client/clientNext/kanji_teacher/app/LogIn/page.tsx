@@ -28,7 +28,7 @@ export default function LoginPage() {
     event.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/KanjiTest");
+      router.push("/FlashCard");
     } catch (error){
       if (error instanceof FirebaseError){
         console.log(error.code)
@@ -64,7 +64,7 @@ export default function LoginPage() {
       await createUserWithEmailAndPassword(auth, email, password);
       authError ? setAuthError(null) : null;
       authStyle ? setAuthStyle("") : null;
-      router.push("/KanjiTest");
+      router.push("/FlashCard");
     } catch (error){
       if (error instanceof FirebaseError){
         console.log(error.code)
