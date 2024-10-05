@@ -39,7 +39,8 @@ const GetFlashcardData = async (user: User, loadingFunction: Dispatch<SetStateAc
             }
         }
         console.log(options)
-        let url = "http://localhost:5233/api/getFlashCard"
+
+        let url = process.env.NEXT_PUBLIC_SERVER_ENDPOINT + "/getFlashCard"
         let query = wantToProgress ? `?progress=${wantToProgress}` : null
         if (query != null) url += query;
         const response = await fetch(url, options)
@@ -66,7 +67,8 @@ const ValidateFlashCardData = async (user: User, loadingFunction: Dispatch<SetSt
             }
         console.log(token)
         const Params: URLSearchParams = new URLSearchParams({id: id.toString(), answer: answer});
-        const response = await fetch("http://localhost:5233/api/validateAnswer?" + Params.toString(), options);
+        let url = process.env.NEXT_PUBLIC_SERVER_ENDPOINT + "/validateAnswer?"
+        const response = await fetch(url + Params.toString(), options);
         if (!response.ok) return console.log(response);
         const result: ResultData = await response.json();
         result.CharacterInfo.KunReadings += ` | ${toRomaji(result.CharacterInfo.KunReadings)}`
