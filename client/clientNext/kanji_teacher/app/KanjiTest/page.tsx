@@ -6,7 +6,6 @@ import {dummydata, kanjiData, dataInterface } from "../../dummydata/dummydata"
 import { KanjiDisplay } from "../Utils/KanjiDisplay/KanjiDisplay";
 import { KansjiAnswer } from "../Utils/KanjiAnswers/KanjiAnswers";
 import Style from "./page.module.css";
-import { showUsers } from "../../scripts/firebaseConfig/firebaseConfig";
 
 
 const setClass = (selectedAnswer: string, CorrectAnswer: string) =>{
@@ -14,24 +13,12 @@ const setClass = (selectedAnswer: string, CorrectAnswer: string) =>{
     return selectedAnswer === CorrectAnswer ? "correct" : "incorrect"
 }
 
-type DataKeys = "anonymous" | "Qy8Y7izWhNS66chGKtVvclx4Zr53"
-
-
-const validateUid = (uid:string|null, data: any): uid is DataKeys =>{
-    return typeof uid === "string" && uid in data
-}
-
-
-
-
 export default function KanjiTest(){
-    const [user] = showUsers();
     const router = useRouter();
-    const uid = user ? user.uid : null
     const [index, setIndex] = useState<number>(0)
     const [answerIsSet, setAnswer] = useState<boolean>(false)
     /* fetch med uid her til postgres */
-    const selectedData: dataInterface = validateUid(uid, dummydata) ? dummydata[uid] : dummydata["anonymous"]
+    const selectedData: dataInterface = dummydata["anonymous"]
     const currentKanji = Object.keys(selectedData)[index]
     let correctAnswer = ""
     if (currentKanji in selectedData){
