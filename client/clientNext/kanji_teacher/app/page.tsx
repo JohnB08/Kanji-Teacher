@@ -12,7 +12,6 @@ const notoSansJp = Noto_Sans_JP({ subsets: ["latin"], weight: ["400", "700"] });
 
 export default function Page (){
     const [user] = showUsers()
-    console.log(user)
     return (
         <main className={[styles.main, notoSansJp.className].join(" ")}>
             <Image src={Logo} alt={"Logo"} className={styles.Logo} />

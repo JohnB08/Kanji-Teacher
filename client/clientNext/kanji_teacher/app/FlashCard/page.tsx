@@ -38,7 +38,6 @@ const GetFlashcardData = async (user: User, loadingFunction: Dispatch<SetStateAc
                 Authorization : `Bearer ${token}`
             }
         }
-        console.log(options)
 
         let url = process.env.NEXT_PUBLIC_SERVER_ENDPOINT + "/getFlashCard"
         let query = wantToProgress ? `?progress=${wantToProgress}` : null
@@ -65,7 +64,6 @@ const ValidateFlashCardData = async (user: User, loadingFunction: Dispatch<SetSt
                     Authorization : `Bearer ${token}`
                 }
             }
-        console.log(token)
         const Params: URLSearchParams = new URLSearchParams({id: id.toString(), answer: answer});
         let url = process.env.NEXT_PUBLIC_SERVER_ENDPOINT + "/validateAnswer?"
         const response = await fetch(url + Params.toString(), options);
@@ -74,7 +72,6 @@ const ValidateFlashCardData = async (user: User, loadingFunction: Dispatch<SetSt
         result.CharacterInfo.KunReadings += ` | ${toRomaji(result.CharacterInfo.KunReadings)}`
         result.CharacterInfo.onReadings += ` | ${toRomaji(result.CharacterInfo.OnReadings)}`
         saveDataFunction(result);
-        console.log(result);
         loadingFunction(false);
         setScreenFunction(true);
         return;

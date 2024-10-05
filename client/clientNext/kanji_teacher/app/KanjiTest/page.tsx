@@ -38,7 +38,6 @@ export default function KanjiTest(){
         setAnswer(true)
         setTimeout(()=>{routeIndex()}, 1000)
     }
-    console.log(answerIsSet)
     return (
         <div className={Style.Main}>
             <KanjiDisplay kanji={currentKanji}/>

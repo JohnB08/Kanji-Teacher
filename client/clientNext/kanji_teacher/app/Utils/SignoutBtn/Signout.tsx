@@ -22,7 +22,6 @@ import {useRouter} from "next/navigation"
 
     try {
       await signOut(auth);
-      console.log(user)
       router.push("/");
     } catch (error){
       console.error("Sign out error!", error);

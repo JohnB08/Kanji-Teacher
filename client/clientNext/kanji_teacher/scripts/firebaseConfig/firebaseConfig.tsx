@@ -25,11 +25,8 @@ export const showUsers = () =>{
     const unsubscribe = onAuthStateChanged(auth, (user) => {
         setLoading(true);
         if (user) {
-            console.log("User is signed in")
-            console.log(user)
             setUser(user)
         } else {
-            console.log("User is signed out")
             setUser(null)
         }
         setLoading(false);

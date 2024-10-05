@@ -22,7 +22,6 @@ export default function LoginPage() {
   const [showLogin, setShowLogin] = useState<boolean>(true);  
   const [user] = showUsers()
   const router = useRouter();
-  console.log(user)
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
