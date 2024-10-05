@@ -45,6 +45,7 @@ const GetFlashcardData = async (user: User, loadingFunction: Dispatch<SetStateAc
         const response = await fetch(url, options)
         if (!response.ok) return console.log(response);
         const result: FlashCardData = await response.json();
+        result.Alternatives.sort();
         saveDataFunction(result);
         loadingFunction(false);
         setScreenFunction(false);
