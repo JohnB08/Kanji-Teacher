@@ -19,9 +19,11 @@ export const firebaseApp = initializeApp(firebaseConfig)
 
 export const showUsers = () =>{
     const [user, setUser] = useState<User | null>(null)
+    const [loadingUser, setLoading] = useState<boolean>(true) 
     useEffect(()=>{
     const auth = getAuth(firebaseApp);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+        setLoading(true);
         if (user) {
             console.log("User is signed in")
             console.log(user)
@@ -30,9 +32,10 @@ export const showUsers = () =>{
             console.log("User is signed out")
             setUser(null)
         }
+        setLoading(false);
     })
 
     return unsubscribe;
 }, [])
-return [user]
+return [user, loadingUser]
 }

@@ -7,26 +7,29 @@ import { KansjiAnswer } from "../Utils/KanjiAnswers/KanjiAnswers";
 import Style from "./page.module.css";
 import { showUsers } from "../../scripts/firebaseConfig/firebaseConfig";
 import { User } from "firebase/auth";
+import { toRomaji } from "wanakana";
 
 type FlashCardData = {
     Id: number,
     Alternatives: string[],
     Kanji: string
 }
-
-type ResultData = {
-    CharacterInfo: {
+type CharacterInfo = {
         Grade: number,
         Description: string,
         Char: string,
         KunReadings: string,
         Meanings: string,
         OnReadings: string
-    },
-    Correct: boolean
+    } & Record<string, string>
+
+type ResultData = {
+    CharacterInfo: CharacterInfo,
+    Correct: boolean,
+    CanProgress: boolean
 }
 
-const GetFlashcardData = async (user: User, loadingFunction: Dispatch<SetStateAction<boolean>>, saveDataFunction: Dispatch<SetStateAction<FlashCardData | null>>, setScreenFunction: Dispatch<SetStateAction<boolean>>) =>{
+const GetFlashcardData = async (user: User, loadingFunction: Dispatch<SetStateAction<boolean>>, saveDataFunction: Dispatch<SetStateAction<FlashCardData | null>>, setScreenFunction: Dispatch<SetStateAction<boolean>>, wantToProgress: boolean | null) =>{
     try{
         const token = await user.getIdToken();
         loadingFunction(true);
@@ -36,7 +39,10 @@ const GetFlashcardData = async (user: User, loadingFunction: Dispatch<SetStateAc
             }
         }
         console.log(options)
-        const response = await fetch("http://localhost:5233/api/getFlashCard", options)
+        let url = "http://localhost:5233/api/getFlashCard"
+        let query = wantToProgress ? `?progress=${wantToProgress}` : null
+        if (query != null) url += query;
+        const response = await fetch(url, options)
         if (!response.ok) return console.log(response);
         const result: FlashCardData = await response.json();
         saveDataFunction(result);
@@ -63,6 +69,8 @@ const ValidateFlashCardData = async (user: User, loadingFunction: Dispatch<SetSt
         const response = await fetch("http://localhost:5233/api/validateAnswer?" + Params.toString(), options);
         if (!response.ok) return console.log(response);
         const result: ResultData = await response.json();
+        result.CharacterInfo.KunReadings += ` | ${toRomaji(result.CharacterInfo.KunReadings)}`
+        result.CharacterInfo.onReadings += ` | ${toRomaji(result.CharacterInfo.OnReadings)}`
         saveDataFunction(result);
         console.log(result);
         loadingFunction(false);
@@ -78,15 +86,15 @@ const ValidateFlashCardData = async (user: User, loadingFunction: Dispatch<SetSt
 
 
 export default function FlashCard(){
-    const [user] = showUsers();
+    const [user, userLoading] = showUsers();
     const [loading, setLoading] = useState<boolean>(true);
     const [data, setData] = useState<FlashCardData | null>(null);
     const [resultData, setResultData] = useState<ResultData | null>(null)
     const [displayResults, setDisplayResults] = useState<boolean>(false);
-    if (user == null) console.log(user);
     useEffect(()=>{
-        GetFlashcardData(user as User, setLoading, setData, setDisplayResults)
-    }, [user])
+        if (userLoading) return;
+        GetFlashcardData(user as User, setLoading, setData, setDisplayResults, null)
+    }, [user, userLoading])
     return (
         <>
         {loading ? <p>Loading kanji...</p> : !displayResults && data != null ? 
@@ -126,7 +134,14 @@ export default function FlashCard(){
                         On readings: {resultData.CharacterInfo.OnReadings.split(",").join(", ")}
                     </p>
                 </div>
-                <KansjiAnswer className={""} answer="Try another character" HandleClick={()=>GetFlashcardData(user as User, setLoading, setData, setDisplayResults)}/>
+                {resultData.CanProgress ? 
+                <>
+                <p>
+                    Good job on making progress!
+                </p>
+                <KansjiAnswer className={""} answer="Upgrade your maximum Grade!" HandleClick={()=>GetFlashcardData(user as User, setLoading, setData, setDisplayResults, true)}/>
+                </> : ""}
+                <KansjiAnswer className={""} answer="Try another character" HandleClick={()=>GetFlashcardData(user as User, setLoading, setData, setDisplayResults, null)}/>
             </div>
             </>
             : ""
