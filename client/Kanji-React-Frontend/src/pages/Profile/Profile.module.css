@@ -1,0 +1,11 @@
+.Main{
+    display: flex;
+    flex-direction: column;
+    height: 60vh;
+    justify-content: space-evenly;
+}
+.Main div{
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
