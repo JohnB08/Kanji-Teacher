@@ -60,7 +60,7 @@ const limitKana = (kunreadings: string[]) => {
     for (let i = 0; i < kunreadings.length; i++){
         
             if (filterArray.some((char)=>kunreadings[i].includes(char))){
-                if (count < 3){
+                if (count < 2){
                     returnArray.push(kunreadings[i]);
                     count++;
                 } else continue;
