@@ -8,10 +8,10 @@ import { KanjiProvider } from './Wrappers/KanjiDataWrapper/KanjiDataWrapper.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <KanjiProvider>
-        <RouterProvider router={router} />
-      </KanjiProvider>
-    </AuthProvider>
+      <AuthProvider>
+        <KanjiProvider>
+          <RouterProvider router={router} />
+        </KanjiProvider>
+      </AuthProvider>
   </StrictMode>,
 )

@@ -97,7 +97,7 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
                 }
             }
 
-            let url ="/api/getFlashCard"
+            let url ="http://localhost:5000/api/getFlashCard"
             const query = wantToProgress ? `?progress=${wantToProgress}` : null
             if (query != null) url += query;
             const response = await fetch(url, options)
@@ -128,7 +128,7 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
                     }
                 }
             const Params: URLSearchParams = new URLSearchParams({id: id.toString(), answer: answer});
-            const url =  "/api/validateAnswer?"
+            const url =  "http://localhost:5000/api/validateAnswer?"
             const response = await fetch(url + Params.toString(), options);
             if (!response.ok) return console.log(response);
             const result: Result = await response.json();
@@ -151,7 +151,7 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
                     Authorization : `Bearer ${token}`
                 }
             }
-            const url = "/api/userinfo";
+            const url = "http://localhost:5000/api/userinfo";
             const response = await fetch(url, options);
             if (!response.ok) console.log(response);
             const result: UserStats = await response.json();
