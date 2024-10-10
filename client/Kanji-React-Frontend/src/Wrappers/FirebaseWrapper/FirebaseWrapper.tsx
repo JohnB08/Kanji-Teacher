@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }: AuthProps) =>{
      useEffect(()=>{
         const fetchFirebaseConfig = async () =>{
 
-                const response = await fetch("http://localhost:5000/api/config");
+                const response = await fetch("/api/config");
                 const result = await response.json();
                 const firebaseApp = initializeApp(result);
                 const auth = getAuth(firebaseApp);

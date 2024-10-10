@@ -3,8 +3,7 @@ import Style from "./Profile.module.css"
 
 
 export const Profile = () => {
-    const {userStats, fetchUserStats} = useKanji();
-    fetchUserStats();
+    const {userStats} = useKanji();
     return(
         <>
         {userStats ?
@@ -26,6 +25,12 @@ export const Profile = () => {
         <div>
             <p><b>Your current grade: </b>{userStats.Grade}</p>
             <p><b>Your successrate: </b>{userStats.SuccessRate}</p>
+        </div>
+        <div>
+            <p><b>Progress to next grade: </b></p>
+            <div className={Style.progressbar}>
+                <div className={Style.currentprogress} style={{width: `${userStats.CurrentProgress * 100/userStats.CurrentLimit}%`}}/>
+            </div>
         </div>
         </div> 
         : ""}

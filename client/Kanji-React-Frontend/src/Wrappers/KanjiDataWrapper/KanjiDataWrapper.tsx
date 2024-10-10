@@ -1,12 +1,12 @@
 import { useEffect, useState, ReactNode, createContext, useCallback, useMemo } from "react";
 import { useAuth } from "../FirebaseWrapper/FirebaseContext";
-import { toRomaji } from "wanakana";
 
 
 export type FlashCard = {
     Id: number,
     Alternatives: string[],
     Kanji: string,
+    OnReadings: string,
     KunReadings: string
 }
 type CharacterInfo = {
@@ -39,7 +39,9 @@ type UserStats = {
         Char: string | null, 
         Attempted: number | null,
         Completed: number | null
-    }
+    },
+    CurrentProgress: number,
+    CurrentLimit: number,
     SuccessRate: string
 }
 type ExportedProps = {
@@ -53,24 +55,6 @@ type ExportedProps = {
     fetchUserStats: ()=>Promise<void>
 }
 
-const limitKana = (kunreadings: string[]) => {
-    let count = 0;
-    const filterArray = ["-", "."];
-    const returnArray = [];
-    for (let i = 0; i < kunreadings.length; i++){
-        
-            if (filterArray.some((char)=>kunreadings[i].includes(char))){
-                if (count < 2){
-                    returnArray.push(kunreadings[i]);
-                    count++;
-                } else continue;
-            } else {
-                returnArray.push(kunreadings[i])
-            }
-    }
-    return returnArray.join(", ")
-
-} 
 
 const KanjiContext = createContext<ExportedProps | undefined>(undefined);
 
@@ -86,27 +70,34 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
     bruker context samme "memoriserte" funksjon, hvis ingenting i dependency har endret seg. */
 
     const getFlashCardData = useCallback(async () =>{
-        if (user == null) return;
         try{
             setResultData(null);
             setLoadingData(true);
-            const token = await user.getIdToken();
-            const options = {
-                headers: {
-                    Authorization : `Bearer ${token}`
-                }
-            }
+            let url ="/api/getFlashCard"
 
-            let url ="http://localhost:5000/api/getFlashCard"
-            const query = wantToProgress ? `?progress=${wantToProgress}` : null
-            if (query != null) url += query;
-            const response = await fetch(url, options)
-            if (!response.ok) return console.log(response);
-            const result: FlashCard = await response.json();
-            result.Alternatives.sort();
-            result.KunReadings = limitKana(result.KunReadings.split(", "));
-            result.KunReadings += ` | ${toRomaji(result.KunReadings)}`
-            setDisplayData(result);
+            if (user == null){
+                const query = wantToProgress ? `?progress=${wantToProgress}` : null
+                if (query != null) url += query;
+                const response = await fetch(url)
+                if (!response.ok) return console.log(await response.json());
+                const result: FlashCard = await response.json();
+                result.Alternatives.sort();
+                setDisplayData(result);  
+            } else {
+                const token = await user.getIdToken();
+                const options = {
+                    headers: {
+                        Authorization : `Bearer ${token}`
+                    }
+                }
+                const query = wantToProgress ? `?progress=${wantToProgress}` : null
+                if (query != null) url += query;
+                const response = await fetch(url, options)
+                if (!response.ok) return console.log(await response.json());
+                const result: FlashCard = await response.json();
+                result.Alternatives.sort();
+                setDisplayData(result);
+            }
             setWantToProgress(false);
             } catch(error){
                 console.log(error);
@@ -118,21 +109,28 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
     ,[user, wantToProgress]);
 
     const validateAnswer = useCallback(async (id: number, answer: string) =>{
-        if (user == null) return;
         try{
-            const token = await user.getIdToken();
-            setLoadingData(true);
-            const options: RequestInit = {
-                    headers: {
-                        Authorization : `Bearer ${token}`
-                    }
-                }
             const Params: URLSearchParams = new URLSearchParams({id: id.toString(), answer: answer});
-            const url =  "http://localhost:5000/api/validateAnswer?"
-            const response = await fetch(url + Params.toString(), options);
-            if (!response.ok) return console.log(response);
-            const result: Result = await response.json();
-            setResultData(result);
+            const url =  "/api/validateAnswer?"
+            if (user == null){
+                
+                const response = await fetch(url + Params.toString());
+                if (!response.ok) return console.log(response);
+                const result: Result = await response.json();
+                setResultData(result);
+            } else {
+                const token = await user.getIdToken();
+                setLoadingData(true);
+                const options: RequestInit = {
+                        headers: {
+                            Authorization : `Bearer ${token}`
+                        }
+                    }
+                const response = await fetch(url + Params.toString(), options);
+                if (!response.ok) return console.log(response);
+                const result: Result = await response.json();
+                setResultData(result);
+            }
         } catch (error){
             console.log(error)
         } finally
@@ -151,7 +149,7 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
                     Authorization : `Bearer ${token}`
                 }
             }
-            const url = "http://localhost:5000/api/userinfo";
+            const url = "/api/userinfo";
             const response = await fetch(url, options);
             if (!response.ok) console.log(response);
             const result: UserStats = await response.json();
@@ -166,9 +164,7 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
 
     useEffect(()=>{
         const fetchInitialData = async () =>{
-            if(user){
                 await getFlashCardData()
-            }
         };
         fetchInitialData()
     }, [user, getFlashCardData])

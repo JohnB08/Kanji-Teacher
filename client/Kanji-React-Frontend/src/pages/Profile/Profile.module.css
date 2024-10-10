@@ -1,11 +1,23 @@
 .Main{
     display: flex;
     flex-direction: column;
-    height: 60vh;
+    height: 80vh;
     justify-content: space-evenly;
 }
 .Main div{
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
+}
+.progressbar{
+    height: 5vh;
+    width: 100%;
+    border: 0.2rem solid var(--darkMode);
+    display: flex;
+    align-items: start;
+    justify-content: center;
+}
+.currentprogress{
+    background-color: var(--darkMode);
+    height: 3vh;
 }

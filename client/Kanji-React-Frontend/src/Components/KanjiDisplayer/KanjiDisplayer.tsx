@@ -8,6 +8,7 @@ export const KanjiDisplay = () => {
         {displayData ? 
         <div className={Style.Display}>
             <h1 className={Style.Kanji}>{displayData.Kanji}</h1>
+            <p className={Style.KunReadings}>{displayData.OnReadings}</p>
             <p className={Style.KunReadings}>{displayData.KunReadings}</p>
         </div>
         : ""}
