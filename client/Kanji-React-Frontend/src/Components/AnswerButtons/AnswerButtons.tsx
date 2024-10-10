@@ -1,8 +1,9 @@
 import { useKanji } from "../../Wrappers/KanjiDataWrapper/KanjiContextProvider";
 import Style from "./AnswerButtons.module.css";
+import { toUpper } from "../../Utilities/ToUpper/ToUpper";
 
 export const AnswerButtons = ()=>{
-    const {displayData, resultData, validateAnswer, setWantToProgress,getFlashCardData} = useKanji();
+    const {displayData, resultData, validateAnswer, setWantToProgress,getFlashCardData, loadingData} = useKanji();
     return (
         <>
             {displayData ? 
@@ -11,17 +12,15 @@ export const AnswerButtons = ()=>{
                     <div key={i}>
                         <button 
                             onClick={async()=> await validateAnswer(displayData.Id, answer)} 
-                            className={[Style.Answer, "button", resultData ? resultData.CharacterInfo.Description == answer ? "correct" : "incorrect" : ""].join(" ")}
-                            disabled={resultData ? true : false}
+                            className={[Style.Answer, "button", "large", resultData ? resultData.CharacterInfo.Description == answer ? "correct" : "incorrect" : ""].join(" ")}
+                            disabled={resultData || loadingData ? true : false}
                         >
-                            {answer}
+                            {toUpper(answer)}
                         </button>
                         {
                             resultData && resultData.CharacterInfo.Description == answer ? 
                             <div className={Style.textContainer}>
-                            <h2>{resultData.Correct ? "Correct!" : "Incorrect."}</h2>
-                            <p><b>{resultData.CharacterInfo.Description}</b></p>
-                            <p><b>Grade: </b>{resultData.CharacterInfo.Grade}</p>
+                            <p><b>Grade: </b>N{resultData.CharacterInfo.Grade}</p>
                             <p><b>Meanings: </b>{resultData.CharacterInfo.Meanings}</p>
                             {
                                 resultData && resultData.CanProgress ? 
@@ -32,7 +31,7 @@ export const AnswerButtons = ()=>{
                                             setWantToProgress(true);
                                             await getFlashCardData();
                                         }}
-                                        className="button"
+                                        className="button small"
                                         >
                                         Upgrade and get new Kanji
                                     </button>
@@ -40,7 +39,7 @@ export const AnswerButtons = ()=>{
                             }
                             <button
                                 onClick={getFlashCardData}
-                                className="button"
+                                className="button small"
                                 >
                                     Get new kanji
                             </button>

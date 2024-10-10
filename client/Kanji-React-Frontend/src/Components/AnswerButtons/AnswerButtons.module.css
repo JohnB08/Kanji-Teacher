@@ -4,3 +4,8 @@
     gap: 1rem;
     padding: 1.5rem 0 ;
 }
+.textContainer p{
+    width: 400px;
+    max-width: 90%;
+    word-wrap: break-word;
+}

@@ -10,8 +10,8 @@ export default function Home (){
         <main className={styles.main}>
             <img src={Logo} alt={"Logo"} className={styles.Logo} />
             <div className={styles.LinkContainer}>
-                {user ? <><Link to={"/FlashCard"} className={[styles.Link, "button"].join(" ") }>Continue Lessons</Link> <SignOut className={styles.Link}/> </>:  <><Link to={"/KanjiTest"} className={[styles.Link, "button"].join(" ")}>Try it out!</Link>
-                <Link to={"/Login"} className={[styles.Link, "button"].join(" ")}>Log In/Sign Up</Link></>}
+                {user ? <><Link to={"/FlashCard"} className={[styles.Link, "button large"].join(" ") }>Continue Lessons</Link> <SignOut className={styles.Link}/> </>:  <><Link to={"/KanjiTest"} className={[styles.Link, "button large"].join(" ")}>Try it out!</Link>
+                <Link to={"/Login"} className={[styles.Link, "button large"].join(" ")}>Log In/Sign Up</Link></>}
             </div>
         </main>
     )

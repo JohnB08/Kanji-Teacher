@@ -24,6 +24,6 @@ import { useNavigate } from "react-router-dom";
     }
   }
     return (
-      <button onClick={handleSignOut} className={[className, "button"].join(" ")}>Sign Out</button>
+      <button onClick={handleSignOut} className={[className, "button large"].join(" ")}>Sign Out</button>
     )
   }

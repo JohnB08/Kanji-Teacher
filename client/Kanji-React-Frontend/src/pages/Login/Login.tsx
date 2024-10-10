@@ -105,7 +105,7 @@ export default function Login() {
   return (
     <div className={Style.MainContainer}>
       <Link to={"/"}><img src={Logo} alt="Kanji Teacher Logo"/></Link>
-      {user ? <><SignOut className=""/><Link to="/" className="button">Back</Link></> : showLogin ? 
+      {user ? <><SignOut className=""/><Link to="/" className="button large">Back</Link></> : showLogin ? 
       <>
       <form onSubmit={handleLogin} className={Style.main}>
         <div className={[Style.EmailInput, authStyle].join(" ")}>
