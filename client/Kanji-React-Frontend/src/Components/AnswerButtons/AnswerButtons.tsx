@@ -12,7 +12,7 @@ export const AnswerButtons = ()=>{
                     <div key={i}>
                         <button 
                             onClick={async()=> await validateAnswer(displayData.Id, answer)} 
-                            className={[Style.Answer, "button", "large", resultData ? resultData.CharacterInfo.Description == answer ? "correct" : "incorrect" : ""].join(" ")}
+                            className={["button", resultData ? resultData.CharacterInfo.Description == answer ? "correct small" : "incorrect small" : "large"].join(" ")}
                             disabled={resultData || loadingData ? true : false}
                         >
                             {toUpper(answer)}

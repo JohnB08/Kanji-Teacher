@@ -17,7 +17,7 @@ export default function Login() {
   const [authError, setAuthError] = useState<string|null>(null);
   const [authStyle, setAuthStyle] = useState<string>("");
   const [showLogin, setShowLogin] = useState<boolean>(true);  
-  const {user, login, signup} = useAuth();
+  const {user, login, signup, signInWithGoogle} = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (event: FormEvent) => {
@@ -118,6 +118,8 @@ export default function Login() {
         </div>
         <div className={Style.ButtonContainer}>
         <button type="submit" className={Style.SubmitBtn}>Log in</button>
+        <p>or</p>
+        <button onClick={signInWithGoogle} className={Style.SubmitBtn}>Sign in using Google</button>
       </div>
       </form>
         <button onClick={toggleForm} className={Style.ToggleBtn}>New User? Sign Up</button>
