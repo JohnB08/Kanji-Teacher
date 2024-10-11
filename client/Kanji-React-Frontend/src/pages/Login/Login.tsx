@@ -118,7 +118,6 @@ export default function Login() {
         </div>
         <div className={Style.ButtonContainer}>
         <button type="submit" className={Style.SubmitBtn}>Log in</button>
-        <p>or</p>
         <button onClick={signInWithGoogle} className={Style.SubmitBtn}>Sign in using Google</button>
       </div>
       </form>
