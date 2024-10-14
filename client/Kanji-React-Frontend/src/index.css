@@ -33,7 +33,7 @@ body a{
   text-align: center;
   transition: ease-in-out 150ms;
 }
-.button:hover{
+.button:not(.incorrect, .correct):hover{
   background-color: var(--darkMode);
   color: var(--lightMode);
   cursor: pointer;
@@ -43,14 +43,14 @@ body a{
   padding-bottom: 1rem;
 }
 .small{
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
 }
 .incorrect{
     background-color: var(--accent);
     color: var(--lightMode);
 }
-.correct, .correct:hover{
+.correct{
     background-color: var(--darkMode);
     color: var(--lightMode);
 }
