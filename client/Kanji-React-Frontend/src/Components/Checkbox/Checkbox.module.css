@@ -1,0 +1,22 @@
+.CheckContainer{
+    width: 15vw;
+    height: 4vw;
+    position: relative;
+    border: 4px solid var(--darkMode);
+}
+
+.CheckLabel{
+    width: 40%;
+    height: 2.5vw;
+    position: absolute;
+    left: 5%;
+    top: 15%;
+    background-color: var(--darkMode);
+    transition: 150ms ease-in-out;
+}
+.CheckLabel:has(.Checkbox:checked){
+    left: 55%;
+}
+.Checkbox{
+    display: none;
+}

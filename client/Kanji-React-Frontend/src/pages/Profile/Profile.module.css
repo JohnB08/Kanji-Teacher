@@ -15,6 +15,7 @@
     border: 0.2rem solid var(--darkMode);
     display: flex;
     align-items: start;
+    padding:0 0.75rem;
     justify-content: center;
 }
 .currentprogress{

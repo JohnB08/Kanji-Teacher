@@ -6,8 +6,8 @@ export type FlashCard = {
     Id: number,
     Alternatives: string[],
     Kanji: string,
-    OnReadings: string,
-    KunReadings: string
+    OnReadings: string | undefined,
+    KunReadings: string | undefined
 }
 type CharacterInfo = {
         Grade: number,
@@ -52,7 +52,9 @@ type ExportedProps = {
     getFlashCardData: ()=>Promise<void>,
     validateAnswer: (id: number, answer: string)=>Promise<void>,
     setWantToProgress: React.Dispatch<React.SetStateAction<boolean>>,
-    fetchUserStats: ()=>Promise<void>
+    fetchUserStats: ()=>Promise<void>,
+    setMode: React.Dispatch<React.SetStateAction<"phrase" | "character">>
+    mode: string,
 }
 
 
@@ -64,6 +66,7 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
     const [resultData, setResultData] = useState<Result | null>(null);
     const [userStats, setUserStats] = useState<UserStats | null>(null);
     const [wantToProgress, setWantToProgress] = useState<boolean>(false);
+    const [mode, setMode] = useState<"phrase" | "character">("phrase");
     const {user} = useAuth();
 
     const getUrlOptions = useCallback(async () =>{
@@ -87,7 +90,7 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
         try{ 
             let url =import.meta.env.VITE_SERVER_ENDPOINT + "/getFlashCard";
             const options = await getUrlOptions();
-            const query = wantToProgress ? `?progress=${wantToProgress}` : null
+            const query = wantToProgress ? `?progress=${wantToProgress}&mode=${mode}` : `?mode=${mode}`
             if (query != null) url += query;
             const response = await fetch(url, options)
             if (!response.ok) return console.log(await response.json());
@@ -102,15 +105,15 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
                 setLoadingData(false);
             }
         }
-    ,[getUrlOptions, wantToProgress]);
+    ,[getUrlOptions, wantToProgress, mode]);
 
     const validateAnswer = useCallback(async (id: number, answer: string) =>{
         setLoadingData(true);
         try{
-            const Params: URLSearchParams = new URLSearchParams({id: id.toString(), answer: answer});
+            const Params: URLSearchParams = new URLSearchParams({id: id.toString(), answer: answer, mode: mode});
             const url =  import.meta.env.VITE_SERVER_ENDPOINT;
             const options = await getUrlOptions();
-            const response = await fetch(url + "/validateAnswer?" + Params.toString(), options);
+            const response = await fetch(url + "/validateAnswer?"  + Params.toString(), options);
             if (!response.ok) return console.log(response);
             const result: Result = await response.json();
             setResultData(result);
@@ -120,14 +123,14 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
         {
             setLoadingData(false);
         }
-    }, [getUrlOptions])
+    }, [getUrlOptions, mode])
 
     const fetchUserStats = useCallback(async ()=>{
         setLoadingData(true);
         try{
             const options = await getUrlOptions();
             const url = import.meta.env.VITE_SERVER_ENDPOINT;
-            const response = await fetch(url + "/userinfo", options);
+            const response = await fetch(url + `/userinfo?mode=${mode}`, options);
             if (!response.ok) console.log(response);
             const result: UserStats = await response.json();
             setUserStats(result);
@@ -137,7 +140,7 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
             setLoadingData(false);
         }
 
-    }, [getUrlOptions])
+    }, [getUrlOptions, mode])
 
     useEffect(()=>{
         getFlashCardData();
@@ -154,7 +157,9 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
         getFlashCardData,
         setWantToProgress,
         validateAnswer,
-    }), [displayData, resultData, loadingData, userStats, fetchUserStats, getFlashCardData, validateAnswer])
+        setMode,
+        mode
+    }), [displayData, resultData, loadingData, userStats, fetchUserStats, getFlashCardData, validateAnswer, mode])
 
     return (
         <KanjiContext.Provider value={exportValues}>
