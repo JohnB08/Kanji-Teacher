@@ -130,7 +130,6 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
 
     const fetchUserStats = useCallback(async ()=>{
         setLoadingData(true);
-        setUserStats(null);
         try{
             const options = await getUrlOptions();
             const url = import.meta.env.VITE_SERVER_ENDPOINT;
