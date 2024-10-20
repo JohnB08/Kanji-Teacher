@@ -55,6 +55,8 @@ type ExportedProps = {
     fetchUserStats: ()=>Promise<void>,
     setMode: React.Dispatch<React.SetStateAction<"phrase" | "character">>
     mode: string,
+    changeMode: ()=>void,
+    modeSelect: boolean,
 }
 
 
@@ -67,6 +69,7 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
     const [userStats, setUserStats] = useState<UserStats | null>(null);
     const [wantToProgress, setWantToProgress] = useState<boolean>(false);
     const [mode, setMode] = useState<"phrase" | "character">("phrase");
+    const [modeSelect, setModeSelect] = useState<boolean>(false);
     const {user} = useAuth();
 
     const getUrlOptions = useCallback(async () =>{
@@ -127,6 +130,7 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
 
     const fetchUserStats = useCallback(async ()=>{
         setLoadingData(true);
+        setUserStats(null);
         try{
             const options = await getUrlOptions();
             const url = import.meta.env.VITE_SERVER_ENDPOINT;
@@ -145,6 +149,14 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
     useEffect(()=>{
         getFlashCardData();
     }, [user, getFlashCardData])
+    useEffect(()=>{
+        fetchUserStats()
+    }, [fetchUserStats])
+
+    const changeMode = useCallback(()=>{
+        setModeSelect(!modeSelect);
+        setMode(modeSelect ? "phrase": "character")
+    }, [modeSelect]);
 
     /* useMemo gjør at react "memoriserer" verdiene, og bruker "memoriserte" verdier på rerender, hvis ingenting har endret seg. */
 
@@ -158,8 +170,10 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
         setWantToProgress,
         validateAnswer,
         setMode,
-        mode
-    }), [displayData, resultData, loadingData, userStats, fetchUserStats, getFlashCardData, validateAnswer, mode])
+        mode,
+        changeMode,
+        modeSelect
+    }), [displayData, resultData, loadingData, userStats, fetchUserStats, getFlashCardData, validateAnswer, mode, changeMode, modeSelect])
 
     return (
         <KanjiContext.Provider value={exportValues}>
