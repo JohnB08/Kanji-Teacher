@@ -31,7 +31,7 @@ body a{
   background-color: var(--lightMode);
   border: none;
   text-align: center;
-  transition: ease-in-out 150ms;
+  transition: ease-in-out 50ms;
 }
 .button:not(.incorrect, .correct):hover{
   background-color: var(--darkMode);

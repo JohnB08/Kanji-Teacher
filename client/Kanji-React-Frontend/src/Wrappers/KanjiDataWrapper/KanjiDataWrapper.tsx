@@ -3,46 +3,46 @@ import { useAuth } from "../FirebaseWrapper/FirebaseContext";
 
 
 export type FlashCard = {
-    Id: number,
-    Alternatives: string[],
-    Kanji: string,
-    OnReadings: string | undefined,
-    KunReadings: string | undefined
+    id: number,
+    alternatives: string[],
+    kanji: string,
+    onReadings: string | undefined,
+    kunReadings: string | undefined
 }
 type CharacterInfo = {
-        Grade: number,
-        Description: string,
-        Char: string,
-        Meanings: string,
+        grade: number,
+        description: string,
+        char: string,
+        meanings: string,
     }
 
 export type Result = {
-    CharacterInfo: CharacterInfo,
-    Correct: boolean,
-    CanProgress: boolean
+    characterInfo: CharacterInfo,
+    correct: boolean,
+    canProgress: boolean
 }
 type KanjiProps = {
         children: ReactNode
 }
 type UserStats = {
-    Grade: number,
-    TimesCompleted: number,
-    TimesAttempted: number,
-    MostCompleted: {
-        Description: string | null,
-        Char: string | null,
-        Attempted: number | null,
-        Completed: number | null
+    grade: number,
+    timesCompleted: number,
+    timesAttempted: number,
+    mostCompleted: {
+        description: string | null,
+        char: string | null,
+        attempted: number | null,
+        completed: number | null
     },
-    MostAttempted: {
-        Description: string | null,
-        Char: string | null, 
-        Attempted: number | null,
-        Completed: number | null
+    mostAttempted: {
+        description: string | null,
+        char: string | null, 
+        attempted: number | null,
+        completed: number | null
     },
-    CurrentProgress: number,
-    CurrentLimit: number,
-    SuccessRate: string
+    currentProgress: number,
+    currentLimit: number,
+    successRate: string
 }
 type ExportedProps = {
     displayData: FlashCard | null,
@@ -98,7 +98,7 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
             const response = await fetch(url, options)
             if (!response.ok) return console.log(await response.json());
             const result: FlashCard = await response.json();
-            result.Alternatives.sort();
+            result.alternatives.sort();
             setDisplayData(result);
             setWantToProgress(false);
             } catch(error){
@@ -148,6 +148,7 @@ export const KanjiProvider = ({children}: KanjiProps) =>{
     useEffect(()=>{
         getFlashCardData();
     }, [user, getFlashCardData])
+    
     useEffect(()=>{
         fetchUserStats()
     }, [fetchUserStats])

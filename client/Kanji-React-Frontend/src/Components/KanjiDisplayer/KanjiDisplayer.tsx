@@ -9,10 +9,10 @@ export const KanjiDisplay = () => {
         {displayData ? 
         <div className={Style.Display}>
             <Textfit mode="single">
-                <h1 className={Style.Kanji}>{displayData.Kanji}</h1>
+                <h1 className={Style.Kanji}>{displayData.kanji}</h1>
             </Textfit>
-            <p className={Style.KunReadings}>{displayData.OnReadings}</p>
-            <p className={Style.KunReadings}>{displayData.KunReadings}</p>
+            <p className={Style.KunReadings}>{displayData.onReadings}</p>
+            <p className={Style.KunReadings}>{displayData.kunReadings}</p>
         </div>
         : ""}
         </>

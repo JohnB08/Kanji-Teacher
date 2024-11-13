@@ -7,23 +7,23 @@ export const AnswerButtons = ()=>{
     return (
         <>
             {displayData ? 
-            displayData.Alternatives.map((answer, i)=>{
+            displayData.alternatives.map((answer, i)=>{
                 return (
                     <div key={i}>
                         <button 
-                            onClick={async()=> await validateAnswer(displayData.Id, answer)} 
-                            className={["button", resultData ? resultData.CharacterInfo.Description == answer ? "correct small" : "incorrect small" : "large"].join(" ")}
+                            onClick={async()=> await validateAnswer(displayData.id, answer)} 
+                            className={["button", resultData ? resultData.characterInfo.description == answer ? "correct small" : "incorrect small" : "large"].join(" ")}
                             disabled={resultData || loadingData ? true : false}
                         >
                             {toUpper(answer)}
                         </button>
                         {
-                            resultData && resultData.CharacterInfo.Description == answer ? 
+                            resultData && resultData.characterInfo.description == answer ? 
                             <div className={Style.textContainer}>
-                            <p><b>Grade: </b>N{resultData.CharacterInfo.Grade}</p>
-                            <p><b>Meanings: </b>{resultData.CharacterInfo.Meanings}</p>
+                            <p><b>Grade: </b>N{resultData.characterInfo.grade}</p>
+                            <p><b>Meanings: </b>{resultData.characterInfo.meanings}</p>
                             {
-                                resultData && resultData.CanProgress ? 
+                                resultData && resultData.canProgress ? 
                                     <>
                                     <p><b>Good job progressing!</b></p>
                                     <button
